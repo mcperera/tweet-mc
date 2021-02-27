@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createUser, signWithEmailPass } from "../../auth/";
+import { createUser, signWithEmailPass } from "../../store/actionCreators/user";
 import logo from "../../assets/images/logo/logo.png";
 import cover from "../../assets/images/login/login.png";
 
@@ -8,17 +8,12 @@ function Login({ history }) {
   const dispatch = useDispatch();
   const [showSignUp, setShowSignUp] = useState(false);
 
-  const data = showSignUp
-    ? {
-        name: "",
-        email: "",
-        password: "",
-        confirmPass: "",
-      }
-    : {
-        email: "",
-        password: "",
-      };
+  const data = {
+    name: "",
+    email: "",
+    password: "",
+    confirmPass: "",
+  };
 
   const [formData, setFormData] = useState(data);
 
@@ -34,18 +29,14 @@ function Login({ history }) {
       if (formData.password !== formData.confirmPass) {
         alert("Password does not match");
       } else {
-        console.log("Create Account -->", formData);
-        dispatch(createUser(formData.email, formData.password, history));
+        dispatch(createUser(formData, history));
         setFormData(data);
       }
     } else {
-      console.log("Login -->", formData);
-      dispatch(signWithEmailPass(formData.email, formData.password, history));
+      dispatch(signWithEmailPass(formData, history));
       setFormData(data);
     }
   };
-
-  console.log("history", history);
 
   return (
     <div className={`w-4/5 mx-auto h-screen`}>
@@ -67,28 +58,28 @@ function Login({ history }) {
                   type="text"
                   name="name"
                   placeholder="Name"
-                  value={formData?.name}
+                  value={formData.name}
                   onChange={handleChange}
                 />
                 <input
                   type="text"
                   name="email"
                   placeholder="Email"
-                  value={formData?.email}
+                  value={formData.email}
                   onChange={handleChange}
                 />
                 <input
-                  type="text"
+                  type="password"
                   name="password"
                   placeholder="Password"
-                  value={formData?.password}
+                  value={formData.password}
                   onChange={handleChange}
                 />
                 <input
-                  type="text"
+                  type="password"
                   name="confirmPass"
                   placeholder="Confirm Password"
-                  value={formData?.confirmPass}
+                  value={formData.confirmPass}
                   onChange={handleChange}
                 />
                 <div className={`flex justify-end mt-8`}>
@@ -106,14 +97,14 @@ function Login({ history }) {
                   type="text"
                   name="email"
                   placeholder="email"
-                  value={formData?.email}
+                  value={formData.email}
                   onChange={handleChange}
                 />
                 <input
-                  type="text"
+                  type="password"
                   name="password"
                   placeholder="password"
-                  value={formData?.password}
+                  value={formData.password}
                   onChange={handleChange}
                 />
                 <div className={`flex justify-between mt-8`}>
