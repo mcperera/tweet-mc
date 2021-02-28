@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/images/logo/logo.png";
 
 const links = [
@@ -23,7 +23,9 @@ function Header() {
       <div
         className={`h-full w-9/12 mx-auto flex justify-between items-center`}>
         <div>
-          <img src={logo} alt="logo" />
+          <Link to={"/feed"}>
+            <img src={logo} alt="logo" />
+          </Link>
         </div>
         <nav>
           <ul className={`flex justify-between w-52`}>

@@ -1,9 +1,14 @@
 import React from "react";
+import { UserCard } from "../../components";
 
 function Users() {
   return (
-    <div>
-      <h1>Users</h1>
+    <div className={`overflow-auto w-3/4 mx-auto py-3`}>
+      <UserCard />
+      <UserCard />
+      <UserCard />
+      <UserCard />
+      <UserCard />
     </div>
   );
 }

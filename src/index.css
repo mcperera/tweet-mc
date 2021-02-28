@@ -19,7 +19,7 @@ input:focus-visible {
 .btn {
   height: max-content;
   width: max-content;
-  padding: 10px 25px;
+  padding: 8px 25px;
 
   background: #ff748d;
   color: white;

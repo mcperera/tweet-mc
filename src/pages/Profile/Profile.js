@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-import { ProfileHeader, ProfileTabs } from "../../components";
+import { ProfileHeader, ProfileTabs, Post, UserCard } from "../../components";
 
 function Profile() {
   const [selectTab, setSelectTab] = useState({
     tab: "Posts",
   });
 
-  let tabData = <h1>Posts</h1>;
+  let tabData = <Post />;
 
   switch (selectTab.tab) {
     case "Post":
-      tabData = <h1>Posts</h1>;
+      tabData = <Post />;
       break;
     case "Followers":
-      tabData = <h1>Followers</h1>;
+      tabData = <UserCard />;
       break;
     case "Following":
-      tabData = <h1>Following</h1>;
+      tabData = <UserCard />;
       break;
     default:
       break;
@@ -26,7 +26,7 @@ function Profile() {
     <section>
       <ProfileHeader />
       <ProfileTabs setSelectTab={setSelectTab} selectTab={selectTab} />
-      <div>{tabData}</div>
+      <div className={`w-3/4 mx-auto`}>{tabData}</div>
     </section>
   );
 }
