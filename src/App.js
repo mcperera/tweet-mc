@@ -10,7 +10,7 @@ function App() {
       <Switch>
         <Route path="/login" exact component={Login} />
         <Layout>
-          <ProtectedRoute path={"/feed"} exact component={Feed} />
+          <ProtectedRoute path={"/"} exact component={Feed} />
           <ProtectedRoute path={"/users"} exact component={Users} />
           <ProtectedRoute path={"/profile"} exact component={Profile} />
         </Layout>
