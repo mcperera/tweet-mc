@@ -47,7 +47,7 @@ const signWithEmailPass = (formData, history) => {
         var user = result.user;
 
         dispatch({ type: USER_LOGIN_SUCCESS, payload: { user } });
-        history.push("/feed");
+        history.push("/");
       })
       .catch((error) => console.log(error));
   };
@@ -72,7 +72,7 @@ const createUser = (formData, history) => {
               type: USER_LOGIN_SUCCESS,
               payload: { user: currentUser },
             });
-            history.push("/feed");
+            history.push("/");
           })
           .catch((error) => console.log("createUser", error));
       })
