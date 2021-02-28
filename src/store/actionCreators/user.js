@@ -1,6 +1,6 @@
-import { USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS } from "../actionTypes/user";
 import fire from "../../auth/firebase";
-import { googleProvider } from "../../auth/providers";
+import { googleProvider } from "../../auth/provider";
+import { USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS } from "../actionTypes/user";
 
 const signIn = () => {
   return (dispatch) => {
@@ -8,7 +8,9 @@ const signIn = () => {
       .auth()
       .signInWithPopup(googleProvider)
       .then(function (result) {
+        // var token = result.credential.accessToken;
         var user = result.user;
+        // console.log(token, user);
         dispatch({ type: USER_LOGIN_SUCCESS, payload: { user } });
       })
       .catch(function (error) {
@@ -21,20 +23,61 @@ const signIn = () => {
   };
 };
 
-function logOut() {
+const signOut = (history) => {
   return (dispatch) => {
     fire
       .auth()
       .signOut()
-      .then(function () {
-        dispatch({
-          type: USER_LOGOUT_SUCCESS,
-        });
+      .then(() => {
+        dispatch({ type: USER_LOGOUT_SUCCESS });
+        history.push("/login");
       })
-      .catch(function (error) {
-        // An error happened.
+      .catch((error) => {
+        console.log(error);
       });
   };
-}
+};
 
-export { signIn, logOut };
+const signWithEmailPass = (formData, history) => {
+  return (dispatch) => {
+    fire
+      .auth()
+      .signInWithEmailAndPassword(formData.email, formData.password)
+      .then(function (result) {
+        var user = result.user;
+
+        dispatch({ type: USER_LOGIN_SUCCESS, payload: { user } });
+        history.push("/feed");
+      })
+      .catch((error) => console.log(error));
+  };
+};
+
+const createUser = (formData, history) => {
+  console.log("createUser -->", formData.email, formData.password);
+
+  return (dispatch) => {
+    fire
+      .auth()
+      .createUserWithEmailAndPassword(formData.email, formData.password)
+      .then(function () {
+        const user = fire.auth().currentUser;
+        user
+          .updateProfile({
+            displayName: formData.name,
+          })
+          .then(() => {
+            const currentUser = fire.auth().currentUser;
+            dispatch({
+              type: USER_LOGIN_SUCCESS,
+              payload: { user: currentUser },
+            });
+            history.push("/feed");
+          })
+          .catch((error) => console.log("createUser", error));
+      })
+      .catch((error) => console.log(error));
+  };
+};
+
+export { signIn, signOut, signWithEmailPass, createUser };

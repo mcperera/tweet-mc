@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   padding: 12px 20px;
   margin: 10px 0;
@@ -18,7 +19,7 @@ input:focus-visible {
 .btn {
   height: max-content;
   width: max-content;
-  padding: 10px 25px;
+  padding: 8px 25px;
 
   background: #ff748d;
   color: white;

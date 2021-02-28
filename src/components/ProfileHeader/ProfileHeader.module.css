@@ -1,0 +1,11 @@
+.profileHeader {
+  border-bottom: 1px solid #f87171;
+}
+
+.avatar {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+
+  border: 1px solid #f87171;
+}
