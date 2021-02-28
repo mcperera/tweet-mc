@@ -32,7 +32,7 @@ function ProfileTabs({ selectTab, setSelectTab }) {
               }
               className={`${
                 selectTab.tab === tab.title && tabItem
-              } flex justify-center  items-center w-32 py-3 text-center mx-3`}>
+              } flex justify-center  items-center w-32 py-3 text-center mx-3 cursor-pointer`}>
               {tab.icon}
               {tab.title}
             </li>
