@@ -1,5 +1,21 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import logo from "../../assets/images/logo/logo.png";
+
+const links = [
+  {
+    title: "Feed",
+    url: "/feed",
+  },
+  {
+    title: "Users",
+    url: "/users",
+  },
+  {
+    title: "Profile",
+    url: "/profile",
+  },
+];
 
 function Header() {
   return (
@@ -11,9 +27,21 @@ function Header() {
         </div>
         <nav>
           <ul className={`flex justify-between w-52`}>
-            <li>Feed</li>
-            <li>Users</li>
-            <li>Profile</li>
+            {links.map((link, index) => {
+              return (
+                <li key={index} className={`w-10 text-gray-400`}>
+                  <NavLink
+                    to={link.url}
+                    exact
+                    activeStyle={{
+                      fontWeight: "bold",
+                      color: "#F87171",
+                    }}>
+                    {link.title}
+                  </NavLink>
+                </li>
+              );
+            })}
           </ul>
         </nav>
       </div>

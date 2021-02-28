@@ -1,4 +1,6 @@
 import Login from "./Login/Login";
-import Home from "./Home/Home";
+import Profile from "./Profile/Profile";
+import Users from "./Users/Users";
+import Feed from "./Feed/Feed";
 
-export { Login, Home };
+export { Login, Profile, Users, Feed };
