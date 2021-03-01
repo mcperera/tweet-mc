@@ -5,7 +5,7 @@ import logo from "../../assets/images/logo/logo.png";
 const links = [
   {
     title: "Feed",
-    url: "/feed",
+    url: "/",
   },
   {
     title: "Users",
@@ -23,7 +23,7 @@ function Header() {
       <div
         className={`h-full w-9/12 mx-auto flex justify-between items-center`}>
         <div>
-          <Link to={"/feed"}>
+          <Link to={"/"}>
             <img src={logo} alt="logo" />
           </Link>
         </div>
