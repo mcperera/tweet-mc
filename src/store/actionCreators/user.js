@@ -1,6 +1,7 @@
 import fire from "../../auth/firebase";
 import { googleProvider } from "../../auth/provider";
 import { USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS } from "../actionTypes/user";
+import { createFirestoreUser } from "../../api/userApi";
 
 const signIn = () => {
   return (dispatch) => {
@@ -72,6 +73,7 @@ const createUser = (formData, history) => {
               type: USER_LOGIN_SUCCESS,
               payload: { user: currentUser },
             });
+            createFirestoreUser(currentUser);
             history.push("/");
           })
           .catch((error) => console.log("createUser", error));
