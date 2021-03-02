@@ -1,5 +1,9 @@
 import produce from "immer";
-import { USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS } from "../actionTypes/user";
+import {
+  USER_LOGIN_SUCCESS,
+  USER_LOGOUT_SUCCESS,
+  USER_UPDATE,
+} from "../actionTypes/user";
 
 const initialState = {
   user: null,
@@ -9,6 +13,9 @@ const initialState = {
 export default produce((draft, action) => {
   switch (action.type) {
     case USER_LOGIN_SUCCESS:
+      draft.user = action.payload.user;
+      break;
+    case USER_UPDATE:
       draft.user = action.payload.user;
       break;
     case USER_LOGOUT_SUCCESS:

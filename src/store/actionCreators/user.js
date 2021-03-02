@@ -1,7 +1,7 @@
 import fire from "../../auth/firebase";
 import { googleProvider } from "../../auth/provider";
 import { USER_LOGIN_SUCCESS, USER_LOGOUT_SUCCESS } from "../actionTypes/user";
-import { createFirestoreUser } from "../../api/userApi";
+import { createFirestoreUser, readFirestoreUserId } from "../../api/userApi";
 
 const signIn = () => {
   return (dispatch) => {
@@ -45,10 +45,12 @@ const signWithEmailPass = (formData, history) => {
       .auth()
       .signInWithEmailAndPassword(formData.email, formData.password)
       .then(function (result) {
-        var user = result.user;
-
-        dispatch({ type: USER_LOGIN_SUCCESS, payload: { user } });
-        history.push("/");
+        var userData = readFirestoreUserId(result.user.uid);
+        userData.then(({ data }) => {
+          const user = { ...data, uid: result.user.uid };
+          dispatch({ type: USER_LOGIN_SUCCESS, payload: { user } });
+          history.push("/");
+        });
       })
       .catch((error) => console.log(error));
   };
@@ -69,11 +71,18 @@ const createUser = (formData, history) => {
           })
           .then(() => {
             const currentUser = fire.auth().currentUser;
+            const user = {
+              uid: currentUser.uid,
+              displayName: currentUser.displayName,
+              posts: 0,
+              followings: [],
+              followers: [],
+            };
+            createFirestoreUser(user);
             dispatch({
               type: USER_LOGIN_SUCCESS,
-              payload: { user: currentUser },
+              payload: { user },
             });
-            createFirestoreUser(currentUser);
             history.push("/");
           })
           .catch((error) => console.log("createUser", error));
