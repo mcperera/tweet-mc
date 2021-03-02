@@ -12,19 +12,34 @@ function Users() {
   const [fetchState, users] = useFetchData(userApiUrl.readUsers);
 
   //TODO
-  const handleFollowUser = (uid) => {
-    const updatedFollowings = { followings: uid };
-    console.log("updatedFollowings", updatedFollowings);
-    updateFirestoreUsers(user.uid, updatedFollowings);
+  const handleFollowUser = (uid, follow) => {
+    if (follow) {
+      const updatedFollowings = { remove: true, followings: uid };
+      //console.log("updatedFollowings", updatedFollowings);
+      updateFirestoreUsers(user.uid, updatedFollowings);
 
-    const updatedFollowers = { followers: user.uid };
-    console.log("updatedFollowers", updatedFollowers);
-    updateFirestoreUsers(uid, updatedFollowers);
+      const updatedFollowers = { remove: true, followers: user.uid };
+      //console.log("updatedFollowers", updatedFollowers);
+      updateFirestoreUsers(uid, updatedFollowers);
 
-    dispatch({
-      type: USER_UPDATE,
-      payload: { user: { ...user, followings: [uid] } },
-    });
+      dispatch({
+        type: USER_UPDATE,
+        payload: { user: { ...user, followings: [] } },
+      });
+    } else {
+      const updatedFollowings = { remove: false, followings: uid };
+      //console.log("updatedFollowings", updatedFollowings);
+      updateFirestoreUsers(user.uid, updatedFollowings);
+
+      const updatedFollowers = { remove: false, followers: user.uid };
+      //console.log("updatedFollowers", updatedFollowers);
+      updateFirestoreUsers(uid, updatedFollowers);
+
+      dispatch({
+        type: USER_UPDATE,
+        payload: { user: { ...user, followings: [uid] } },
+      });
+    }
   };
 
   return (
@@ -32,10 +47,13 @@ function Users() {
       {fetchState.loading && <h1>Loading...</h1>}
       {users?.map((fetchUser) => {
         if (fetchUser.uid !== user.uid) {
+          const currentUserFollowings = user.followings;
+
           return (
             <UserCard
               key={fetchUser.uid}
               {...fetchUser}
+              isFollowing={currentUserFollowings.includes(fetchUser.uid)}
               handleFollowUser={handleFollowUser}
             />
           );
