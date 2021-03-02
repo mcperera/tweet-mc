@@ -1,7 +1,13 @@
 import React from "react";
 import { avatar } from "./UserCard.module.css";
 
-function UserCard({ uid, displayName, followings, handleFollowUser }) {
+function UserCard({
+  uid,
+  displayName,
+  followings,
+  handleFollowUser,
+  isFollowing,
+}) {
   return (
     <div
       className={`flex items-center shadow-lg mx-auto my-2 w-3/4 p-8 rounded`}>
@@ -12,8 +18,10 @@ function UserCard({ uid, displayName, followings, handleFollowUser }) {
           Following : {followings ? followings.length : 0}
         </span>
       </div>
-      <button className={`btn`} onClick={() => handleFollowUser(uid)}>
-        Follow
+      <button
+        className={`btn`}
+        onClick={() => handleFollowUser(uid, isFollowing)}>
+        {isFollowing ? `Unfollow` : `Follow`}
       </button>
     </div>
   );

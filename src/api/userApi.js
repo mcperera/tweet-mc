@@ -34,7 +34,7 @@ const readFirestoreUserId = async (userUid) => {
 };
 
 const updateFirestoreUsers = async (userUid, updatedUser) => {
-  console.log("updateFirestoreUsers-->", updatedUser);
+  //console.log("updateFirestoreUsers-->", updatedUser);
   await axios
     .put(`${userApiUrl.updateUsers}${userUid}`, updatedUser)
     .then((res) => console.log("updateFirestoreUsers-->", res))
