@@ -7,17 +7,43 @@ const userApiUrl = {
     "https://us-central1-components-302307.cloudfunctions.net/tweetFunctions/api/user/",
   readUsers:
     "https://us-central1-components-302307.cloudfunctions.net/tweetFunctions/api/users",
+  updateUsers:
+    "https://us-central1-components-302307.cloudfunctions.net/tweetFunctions/api/user/update/",
 };
 
-const createFirestoreUser = (user) => {
-  console.log(user.uid, user.displayName);
-  axios
+const createFirestoreUser = async (user) => {
+  //console.log("createFirestoreUser-->", user.uid, user.displayName);
+  await axios
     .post(userApiUrl.createUser, {
       uid: user.uid,
       displayName: user.displayName,
+      posts: user.posts,
     })
-    .then((res) => console.log("createUser", res))
-    .catch((error) => console.log("createUser", error));
+    .then((res) => console.log("createUser-->", res))
+    .catch((error) => console.log("createUser-->", error));
 };
 
-export { userApiUrl, createFirestoreUser };
+const readFirestoreUserId = async (userUid) => {
+  //console.log("readFirestoreUserId-->", userId);
+  try {
+    const data = await axios.get(`${userApiUrl.readUserId}${userUid}`);
+    return data;
+  } catch (error) {
+    console.log("readFirestoreUserId-->", error);
+  }
+};
+
+const updateFirestoreUsers = async (userUid, updatedUser) => {
+  console.log("updateFirestoreUsers-->", updatedUser);
+  await axios
+    .put(`${userApiUrl.updateUsers}${userUid}`, updatedUser)
+    .then((res) => console.log("updateFirestoreUsers-->", res))
+    .catch((error) => console.log("updateFirestoreUsers-->", error));
+};
+
+export {
+  userApiUrl,
+  createFirestoreUser,
+  readFirestoreUserId,
+  updateFirestoreUsers,
+};

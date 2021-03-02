@@ -1,9 +1,11 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { signOut } from "../../store/actionCreators/user";
 import { profileHeader, avatar } from "./ProfileHeader.module.css";
 
-function ProfileHeader({ history }) {
+function ProfileHeader() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
@@ -18,9 +20,13 @@ function ProfileHeader({ history }) {
         <div>
           <h1 className={`font-bold text-3xl`}>{user.displayName}</h1>
           <ul className={`flex my-2 text-red-300`}>
-            <li className={`pr-5`}>Posts : 500</li>
-            <li className={`pr-5`}>Followers : 500</li>
-            <li className={`pr-5`}>Following : 500</li>
+            <li className={`pr-5`}>Posts : {user.posts}</li>
+            <li className={`pr-5`}>
+              Followers : {user.followers ? user.followers.length : 0}
+            </li>
+            <li className={`pr-5`}>
+              Followings : {user.followings ? user.followings.length : 0}
+            </li>
           </ul>
           <button onClick={handleSignOut}>Sign Out</button>
         </div>
