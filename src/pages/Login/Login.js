@@ -47,7 +47,10 @@ function Login({ history }) {
         <section className={`w-2/5 max-w-md`}>
           <button
             className={`btnWhite`}
-            onClick={() => setShowSignUp((prev) => !prev)}>
+            onClick={() => {
+              setShowSignUp((prev) => !prev);
+              setFormData(data);
+            }}>
             {showSignUp ? "Login" : "Create Account"}
           </button>
           {showSignUp ? (
@@ -60,13 +63,15 @@ function Login({ history }) {
                   placeholder="Name"
                   value={formData.name}
                   onChange={handleChange}
+                  required={true}
                 />
                 <input
-                  type="text"
+                  type="email"
                   name="email"
                   placeholder="Email"
                   value={formData.email}
                   onChange={handleChange}
+                  required={true}
                 />
                 <input
                   type="password"
@@ -74,6 +79,7 @@ function Login({ history }) {
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
+                  required={true}
                 />
                 <input
                   type="password"
@@ -81,6 +87,7 @@ function Login({ history }) {
                   placeholder="Confirm Password"
                   value={formData.confirmPass}
                   onChange={handleChange}
+                  required={true}
                 />
                 <div className={`flex justify-end mt-8`}>
                   <button className="btn" type="submit">
@@ -94,7 +101,7 @@ function Login({ history }) {
               <h1 className={`text-4xl font-bold my-5`}>Login</h1>
               <form onSubmit={handleSubmit}>
                 <input
-                  type="text"
+                  type="email"
                   name="email"
                   placeholder="email"
                   value={formData.email}
