@@ -12,32 +12,33 @@ function Users() {
   const [fetchState, users] = useFetchData(userApiUrl.readUsers);
 
   //TODO
-  const handleFollowUser = (uid, follow) => {
-    if (follow) {
+  const handleFollowUser = (uid, isNotFollow) => {
+    if (isNotFollow) {
       const updatedFollowings = { remove: true, followings: uid };
-      //console.log("updatedFollowings", updatedFollowings);
       updateFirestoreUsers(user.uid, updatedFollowings);
 
       const updatedFollowers = { remove: true, followers: user.uid };
-      //console.log("updatedFollowers", updatedFollowers);
       updateFirestoreUsers(uid, updatedFollowers);
+
+      const followings = user.followings.filter((item) => item !== uid && item);
 
       dispatch({
         type: USER_UPDATE,
-        payload: { user: { ...user, followings: [] } },
+        payload: { user: { ...user, followings: followings } },
       });
     } else {
       const updatedFollowings = { remove: false, followings: uid };
-      //console.log("updatedFollowings", updatedFollowings);
       updateFirestoreUsers(user.uid, updatedFollowings);
 
       const updatedFollowers = { remove: false, followers: user.uid };
-      //console.log("updatedFollowers", updatedFollowers);
       updateFirestoreUsers(uid, updatedFollowers);
+
+      const followings = user.followings.map((item) => item);
+      followings.push(uid);
 
       dispatch({
         type: USER_UPDATE,
-        payload: { user: { ...user, followings: [uid] } },
+        payload: { user: { ...user, followings: followings } },
       });
     }
   };
