@@ -1,13 +1,11 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { handleFollowUser } from "../../handlers/user";
 import { avatar } from "./UserCard.module.css";
 
-function UserCard({
-  uid,
-  displayName,
-  followings,
-  handleFollowUser,
-  isFollowing,
-}) {
+function UserCard({ uid, displayName, followings, isFollowing }) {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
   return (
     <div
       className={`flex items-center shadow-lg mx-auto my-2 w-3/4 p-8 rounded`}>
@@ -20,7 +18,7 @@ function UserCard({
       </div>
       <button
         className={`btn`}
-        onClick={() => handleFollowUser(uid, isFollowing)}>
+        onClick={() => handleFollowUser(uid, isFollowing, user, dispatch)}>
         {isFollowing ? `Unfollow` : `Follow`}
       </button>
     </div>
