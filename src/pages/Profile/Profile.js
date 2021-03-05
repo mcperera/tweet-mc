@@ -1,51 +1,25 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import useFetchData from "../../hooks/useFetchData";
 import { userApiUrl } from "../../api/userApi";
-import { updateFirestoreUsers } from "../../api/userApi";
-import { USER_UPDATE } from "./../../store/actionTypes/user";
+import { readFirestorePostUserId } from "../../api/postApi";
 import { ProfileHeader, ProfileTabs, Post, UserCard } from "../../components";
 
 function Profile() {
   const [selectTab, setSelectTab] = useState({
     tab: "Posts",
   });
-  const dispatch = useDispatch();
+  const [postData, setPostData] = useState("");
   const { user } = useSelector((state) => state.user);
   const [fetchState, dbUsers] = useFetchData(userApiUrl.readUsers);
 
-  const handleFollowUser = (uid, isNotFollow) => {
-    if (isNotFollow) {
-      const updatedFollowings = { remove: true, followings: uid };
-      updateFirestoreUsers(user.uid, updatedFollowings);
+  let tabData = "";
 
-      const updatedFollowers = { remove: true, followers: user.uid };
-      updateFirestoreUsers(uid, updatedFollowers);
-
-      const followings = user.followings.filter((item) => item !== uid && item);
-
-      dispatch({
-        type: USER_UPDATE,
-        payload: { user: { ...user, followings: followings } },
-      });
-    } else {
-      const updatedFollowings = { remove: false, followings: uid };
-      updateFirestoreUsers(user.uid, updatedFollowings);
-
-      const updatedFollowers = { remove: false, followers: user.uid };
-      updateFirestoreUsers(uid, updatedFollowers);
-
-      const followings = user.followings.map((item) => item);
-      followings.push(uid);
-
-      dispatch({
-        type: USER_UPDATE,
-        payload: { user: { ...user, followings: followings } },
-      });
-    }
-  };
-
-  let tabData = <Post />;
+  useEffect(() => {
+    readFirestorePostUserId(user.uid).then(({ data }) => {
+      setPostData(data);
+    });
+  }, [user.uid]);
 
   const userFollowings = dbUsers?.filter((data) => {
     return user.followings.includes(data.uid) && data;
@@ -56,8 +30,16 @@ function Profile() {
   });
 
   switch (selectTab.tab) {
-    case "Post":
-      tabData = <Post />;
+    case "Posts":
+      tabData = (
+        <>
+          {postData &&
+            postData.map((post) => {
+              console.log(post);
+              return <Post key={post.postId} {...post} />;
+            })}
+        </>
+      );
       break;
     case "Followers":
       tabData = (
@@ -70,7 +52,6 @@ function Profile() {
                 key={fUser.uid}
                 {...fUser}
                 isFollowing={user.followings.includes(fUser.uid)}
-                handleFollowUser={handleFollowUser}
               />
             );
           })}
@@ -84,12 +65,7 @@ function Profile() {
             return fetchState.loading ? (
               <h1>Loading...</h1>
             ) : (
-              <UserCard
-                key={fUser.uid}
-                {...fUser}
-                isFollowing={true}
-                handleFollowUser={handleFollowUser}
-              />
+              <UserCard key={fUser.uid} {...fUser} isFollowing={true} />
             );
           })}
         </>

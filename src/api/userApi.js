@@ -19,7 +19,7 @@ const createFirestoreUser = async (user) => {
       displayName: user.displayName,
       posts: user.posts,
     })
-    .then((res) => console.log("createUser-->", res))
+    .then()
     .catch((error) => console.log("createUser-->", error));
 };
 
@@ -37,7 +37,7 @@ const updateFirestoreUsers = async (userUid, updatedUser) => {
   //console.log("updateFirestoreUsers-->", updatedUser);
   await axios
     .put(`${userApiUrl.updateUsers}${userUid}`, updatedUser)
-    .then((res) => console.log("updateFirestoreUsers-->", res))
+    .then()
     .catch((error) => console.log("updateFirestoreUsers-->", error));
 };
 
