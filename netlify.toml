@@ -1,6 +1,3 @@
-[build]
-  publish = "public"
-  command = "craco build"
 [[redirects]]
 from = "/*"
 to = "/index.html"
